@@ -1,7 +1,8 @@
 from fastapi import APIRouter, HTTPException
+from sqlalchemy.exc import IntegrityError
 
 from app.db.session import SessionDep
-from app.db.models import Appointment
+from app.db.models import Appointment, Doctor
 from app.schemas.appointments import AppointmentCreate
 
 router = APIRouter(
@@ -12,17 +13,22 @@ router = APIRouter(
 
 @router.post("", response_model=Appointment)
 def create_appointment(session: SessionDep, appointment: AppointmentCreate):
-    
-    session.add(Appointment.model_validate(appointment))
-    
+
+    if not session.get(Doctor, appointment.doctor_id):
+        raise HTTPException(status_code=404, detail=f"Doctor with id {appointment.doctor_id} was not found in database")
+
+    db_appointment = Appointment.model_validate(appointment)
+
+    session.add(db_appointment)
+
     try:
         session.commit()
-    except Exception as e:
+    except IntegrityError:
         session.rollback()
-        raise HTTPException(status_code=422, detail=e)
+        raise HTTPException(status_code=422, detail="Doctor can't accept several appointments at the same time")
 
-    session.refresh(appointment)
-    return appointment
+    session.refresh(db_appointment)
+    return db_appointment
 
 
 @router.get("/{appointment_id}", response_model=Appointment)

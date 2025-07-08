@@ -1,14 +1,19 @@
 services:
   api:
+    container_name: clinic_appointments_api
     build:
       context: .
     ports:
       - "$"
     depends_on:
       - db
+    networks:
+      - backend
   db:
     image: postgres:16
     container_name: clinic_appointments_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
     env_file:
       - .env
     networks:
