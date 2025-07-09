@@ -3,8 +3,15 @@ services:
     container_name: clinic_appointments_api
     build:
       context: .
+    command: ["--host", "${APP_HOST}", "--port", "8000"]
+    environment:
+      - APP_ENV=${APP_ENV}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${POSTGRES_DB}
     ports:
-      - "$"
+      - "${HOST_API_PORT}:8000"
     depends_on:
       - db
     networks:
@@ -12,10 +19,14 @@ services:
   db:
     image: postgres:16
     container_name: clinic_appointments_db
+    ports:
+      - "${HOST_DB_PORT}:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-    env_file:
-      - .env
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USER}
     networks:
       - backend
 
@@ -24,4 +35,4 @@ volumes:
   pgdata:
 
 networks:
-  backend
+  backend:

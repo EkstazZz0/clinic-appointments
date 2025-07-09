@@ -1,24 +1,24 @@
 import os
 
-application_environment = os.getenv("APP_ENV", "dev")
+application_environment = os.getenv("APP_ENV")
 
-db_logs = False
-
-db_connect_url = "postgresql+psycopg2://" + os.getenv("POSTGRES_USER", "postgres") + ":" + os.getenv("POSTGRES_PASSWORD", "123456") + "@" + os.getenv("DB_HOST", "localhost") + ":" + os.getenv("DB_PORT", "5432") + "/" + os.getenv("POSTGRES_DB", "postgres")
-connect_args = {}
-
-if application_environment == "dev":
+if application_environment == "test":
     from dotenv import load_dotenv
     load_dotenv(override=True)
-    db_logs = True
-    db_connect_url = "sqlite:///./test.db"
-    connect_args = {
-        "check_same_thread": False
+
+    db_connect_configuration = {
+        "url": "sqlite:///./temp.db",
+        "connect_args": {
+            "check_same_thread": False
+        },
+        "echo": True
     }
-
-
-db_connect_configuration = {
-    "url": db_connect_url,
-    "connect_args": connect_args,
-    "echo": db_logs
-}
+elif application_environment == "production":
+    try:
+        db_connect_configuration = {
+            "url": "postgresql+psycopg2://" + os.environ["DB_USER"] + ":" + os.environ["DB_PASSWORD"] + "@" + os.environ["DB_HOST"] + ":5432/" + os.environ["DB_NAME"]
+        }
+    except KeyError as e:
+        raise KeyError(f"Variable {e.args[0]} must be specified")
+else:
+    raise ValueError("variable APP_ENV must be specified as test or production")

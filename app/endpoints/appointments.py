@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, status
 from sqlalchemy.exc import IntegrityError
 
 from app.db.session import SessionDep
@@ -11,7 +11,7 @@ router = APIRouter(
 )
 
 
-@router.post("", response_model=Appointment)
+@router.post("", response_model=Appointment, status_code=status.HTTP_201_CREATED)
 def create_appointment(session: SessionDep, appointment: AppointmentCreate):
 
     if not session.get(Doctor, appointment.doctor_id):
@@ -33,4 +33,9 @@ def create_appointment(session: SessionDep, appointment: AppointmentCreate):
 
 @router.get("/{appointment_id}", response_model=Appointment)
 def get_appointment(appointment_id: int, session: SessionDep):
-    return session.get(Appointment, appointment_id)
+    appointment = session.get(Appointment, appointment_id)
+
+    if appointment:
+        return appointment
+    else:
+        raise HTTPException(status_code=404, detail=f"Appointment with id {appointment_id} was not found in database")

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, status
 
 from app.db.session import SessionDep
 from app.db.models import Doctor
@@ -10,7 +10,7 @@ router = APIRouter(
 )
 
 
-@router.post("", response_model=Doctor)
+@router.post("", response_model=Doctor, status_code=status.HTTP_201_CREATED)
 def create_doctor(session: SessionDep, doctor: DoctorCreate):
     db_doctor = Doctor.model_validate(doctor)
     session.add(db_doctor)
