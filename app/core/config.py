@@ -7,7 +7,7 @@ if application_environment == "test":
     load_dotenv(override=True)
 
     db_connect_configuration = {
-        "url": "sqlite:///./temp.db",
+        "url": "sqlite:///temp.db",
         "connect_args": {
             "check_same_thread": False
         },
