@@ -1,13 +1,10 @@
 from fastapi import APIRouter, HTTPException, status
 
-from app.db.session import SessionDep
 from app.db.models import Doctor
+from app.db.session import SessionDep
 from app.schemas.doctors import DoctorCreate
 
-router = APIRouter(
-    prefix="/doctors",
-    tags=["doctors"]
-)
+router = APIRouter(prefix="/doctors", tags=["doctors"])
 
 
 @router.post("", response_model=Doctor, status_code=status.HTTP_201_CREATED)
@@ -20,7 +17,7 @@ def create_doctor(session: SessionDep, doctor: DoctorCreate):
     except Exception as e:
         session.rollback()
         raise HTTPException(status_code=422, detail=str(e))
-    
+
     session.refresh(db_doctor)
     return db_doctor
 
@@ -31,4 +28,7 @@ def get_doctor(doctor_id: int, session: SessionDep):
     if doctor:
         return doctor
     else:
-        raise HTTPException(status_code=404, detail=f"Doctor with id {doctor_id} was not found in database.")
+        raise HTTPException(
+            status_code=404,
+            detail=f"Doctor with id {doctor_id} was not found in database.",
+        )

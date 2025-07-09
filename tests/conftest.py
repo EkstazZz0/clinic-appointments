@@ -1,16 +1,12 @@
 import pytest
-from sqlmodel import create_engine, SQLModel, Session
 from fastapi.testclient import TestClient
-from fastapi import FastAPI
-import os
-from datetime import datetime
 
-os.environ["APP_ENV"] = "test"
+from datatest import appointment_description, appointment_time, doctor_for_db
 
-from app.main import app
+from app.db.models import Appointment, Doctor
 from app.db.session import get_session
-from app.db.models import Doctor, Appointment
-from datatest import doctor_for_db, appointment_description, appointment_time
+from app.main import app
+
 
 @pytest.fixture
 def prepared_doctor():
@@ -41,7 +37,7 @@ def prepared_appointment(prepared_doctor):
     db_appointment = Appointment(
         doctor_id=prepared_doctor.id,
         description=appointment_description,
-        start_time=appointment_time
+        start_time=appointment_time,
     )
 
     session.add(db_appointment)

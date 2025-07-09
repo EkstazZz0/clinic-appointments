@@ -1,6 +1,8 @@
-from sqlmodel import SQLModel, Field
-from datetime import datetime, date, time
+from datetime import date, datetime
+
 from sqlalchemy import UniqueConstraint
+from sqlmodel import Field, SQLModel
+
 
 class Doctor(SQLModel, table=True):
     __tablename__ = "doctors"
@@ -20,5 +22,5 @@ class Appointment(SQLModel, table=True):
 
     __table_args__ = (
         UniqueConstraint("doctor_id", "start_time", name="unique_doctor_start_time"),
-        None
+        None,
     )
