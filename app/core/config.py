@@ -4,9 +4,6 @@ import sys
 application_environment = os.getenv("APP_ENV")
 
 if application_environment == "test" or any("pytest" in arg for arg in sys.argv):
-    from dotenv import load_dotenv
-
-    load_dotenv(override=True)
 
     db_connect_configuration = {
         "url": "sqlite:///temp.db",
