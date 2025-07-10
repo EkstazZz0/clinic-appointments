@@ -1,0 +1,19 @@
+База данных ClinicAppointments состоит из двух таблиц: appointments и doctors
+
+doctors: 
+    Поля:
+        1. id: integer NOT NULL Primary Key. Первичный ключ, записи начинаются с 1 и увеличиваются на 1, уникальный идектификатор доктора в таблице.
+        2. name: VARCHAR(150) NOT NULL. Столбец с ФИО врача (доктора)
+        3. birth_date: DATE NOT NULL. Столбец с датой рождения врача (доктора)
+
+Данная таблица содержит информацию о докторах, который принимают запись к себе на приём.
+
+appointments:
+    Поля:
+        1. id: integer NOT NULL Primary Key. Как и id в таблице doctors, является идентификатором записей на прием ко врачу.
+        2. doctor_id: integer NOT NULL. id доктора, является внешним ключом к столбцу id в таблице doctors.
+        3. description: VARCHAR(3000) NOT NULL. Описание, основная информация о записи на прием.
+        4. start_time: timestamp without time zone NOT NULL. Дата и время начала записи.
+    Также добавлена связь уникальности столбцов doctor_id и start_time под название unique_doctor_start_time
+
+Данная таблица содержит информацию о записях на прием к врачу. 
