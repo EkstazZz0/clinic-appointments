@@ -7,7 +7,7 @@ services:
       - APP_ENV=${APP_ENV}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
-      - DB_NAME=${POSTGRES_DB}
+      - DB_NAME=${DB_NAME}
     ports:
       - "${HOST_API_PORT}:8000"
     depends_on:
