@@ -1,9 +1,12 @@
 import os
 import sys
 
+if any("pytest" in arg for arg in sys.argv):
+    os.environ["APP_ENV"] = "test"
+
 application_environment = os.getenv("APP_ENV")
 
-if application_environment == "test" or any("pytest" in arg for arg in sys.argv):
+if application_environment == "test":
     os.environ["APP_ENV"] = "test"
     db_connect_configuration = {
         "url": "sqlite:///temp.db",
