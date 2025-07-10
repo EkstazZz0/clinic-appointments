@@ -40,7 +40,6 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        export APP_ENV="test"
         pip install pytest "fastapi[standard]" sqlmodel
     
     - name: Run tests
