@@ -7,7 +7,7 @@
 
 Требуемые ENV переменные:
 
-1. APP_ENV - используется при запуске API. Значения только production или test.
+1. APP_ENV - режим запуска API. Значения только production или test.
 2. DB_NAME - название базы данных Postgres для СУБД PostgreSQL и подключения API.
 3. DB_USER - имя пользователя Postgres для СУБД PostgreSQL и подключения API.
 4. DB_PASSWORD - пароль пользователя PostgreSQL.
