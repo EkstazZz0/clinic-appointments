@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+import sys
 
 from app.db.repository import init_db
 from app.db.session import engine
@@ -11,7 +12,7 @@ async def lifespan(app: FastAPI):
     yield
     import os
 
-    if os.environ["APP_ENV"] == "test":
+    if os.environ["APP_ENV"] == "test" or any("pytest" in arg for arg in sys.argv):
         engine.dispose()
         os.unlink("./temp.db")
 

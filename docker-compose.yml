@@ -1,8 +1,7 @@
 services:
   api:
     container_name: clinic_appointments_api
-    build:
-      context: .
+    build: .
     command: ["--host", "${APP_HOST}", "--port", "8000"]
     environment:
       - APP_ENV=${APP_ENV}
@@ -29,6 +28,12 @@ services:
       - POSTGRES_USER=${DB_USER}
     networks:
       - backend
+  test:
+    build: .
+    depends_on:
+      - api
+    entrypoint: ["pytest", "--disable-warnings", "-q"]
+
 
 
 volumes:
