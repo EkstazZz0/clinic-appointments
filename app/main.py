@@ -1,5 +1,6 @@
-from fastapi import FastAPI
 import sys
+
+from fastapi import FastAPI
 
 from app.db.repository import init_db
 from app.db.session import engine

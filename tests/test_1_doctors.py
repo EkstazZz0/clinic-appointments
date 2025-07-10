@@ -1,7 +1,10 @@
 import random
 
-from datatest import (doctor_error_create, doctor_error_create_response,
-                      doctor_for_response)
+from datatest import (
+    doctor_error_create,
+    doctor_error_create_response,
+    doctor_for_response,
+)
 from fastapi.testclient import TestClient
 
 

@@ -1,7 +1,6 @@
 import pytest
-from fastapi.testclient import TestClient
-
 from datatest import appointment_description, appointment_time, doctor_for_db
+from fastapi.testclient import TestClient
 
 from app.db.models import Appointment, Doctor
 from app.db.session import get_session

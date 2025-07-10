@@ -1,7 +1,11 @@
 from copy import copy
 
-from datatest import (appointment_description, appointment_error_description,
-                      appointment_for_response, appointment_time)
+from datatest import (
+    appointment_description,
+    appointment_error_description,
+    appointment_for_response,
+    appointment_time,
+)
 from fastapi.testclient import TestClient
 
 
